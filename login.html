@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Portal – Login</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f5f5f3;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            padding: 1.5rem;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            background: #185FA5;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .logo-icon svg {
+            width: 26px;
+            height: 26px;
+            fill: #fff;
+        }
+
+        .logo h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a18;
+        }
+
+        .logo p {
+            font-size: 13px;
+            color: #6b6b68;
+            margin-top: 4px;
+        }
+
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #e8e8e4;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6b6b68;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            border: none;
+            background: transparent;
+        }
+
+        .tab.active {
+            background: #fff;
+            color: #1a1a18;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            border: 0.5px solid #e0dfd8;
+            padding: 2rem;
+        }
+
+        .card h2 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1a1a18;
+            margin-bottom: 4px;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: #6b6b68;
+            margin-bottom: 1.5rem;
+        }
+
+        .field {
+            margin-bottom: 14px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 5px;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 9px 12px;
+            font-size: 14px;
+            border: 0.5px solid #c8c7c0;
+            border-radius: 8px;
+            background: #fff;
+            color: #1a1a18;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .field input:focus {
+            border-color: #185FA5;
+            box-shadow: 0 0 0 3px rgba(24, 95, 165, 0.12);
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .row label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #6b6b68;
+            cursor: pointer;
+        }
+
+        .row a {
+            font-size: 12px;
+            color: #185FA5;
+            text-decoration: none;
+        }
+
+        .row a:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #185FA5;
+            color: #fff;
+            transition: background 0.15s;
+        }
+
+        .btn:hover {
+            background: #0C447C;
+        }
+
+        .btn:active {
+            transform: scale(0.99);
+        }
+
+        .error {
+            background: #FCEBEB;
+            border: 0.5px solid #F09595;
+            color: #A32D2D;
+            font-size: 12px;
+            padding: 8px 12px;
+            border-radius: 7px;
+            margin-bottom: 14px;
+            display: none;
+        }
+
+        .hint {
+            background: #E6F1FB;
+            border: 0.5px solid #85B7EB;
+            color: #185FA5;
+            font-size: 12px;
+            padding: 8px 12px;
+            border-radius: 7px;
+            margin-bottom: 14px;
+        }
+
+        .hint strong {
+            font-weight: 600;
+        }
+
+        .divider {
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M17 11H7V7a5 5 0 0110 0v4zm-5 9a3 3 0 01-3-3v-4h6v4a3 3 0 01-3 3z" />
+                    <path d="M19 11H5a2 2 0 00-2 2v6a2 2 0 002 2h14a2 2 0 002-2v-6a2 2 0 00-2-2z" />
+                </svg>
+            </div>
+            <h1>Annual Tech Summit 2026</h1>
+            <p>April 15–16, 2026 &nbsp;·&nbsp; Grand Hyatt, Chennai</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('admin')">Admin Login</button>
+            <button class="tab" onclick="switchTab('user')">Attendee Login</button>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="panel-admin">
+            <div class="card">
+                <h2>Admin Portal</h2>
+                <p>Manage registrations, attendees &amp; reports.</p>
+                <div class="hint"><strong>Demo:</strong> admin@event.com &nbsp;/&nbsp; admin123</div>
+                <div class="error" id="admin-error">Invalid email or password.</div>
+                <div class="field"><label>Email address</label><input id="admin-email" type="email"
+                        placeholder="admin@event.com" value="admin@event.com"></div>
+                <div class="field"><label>Password</label><input id="admin-pass" type="password" placeholder="••••••••"
+                        value="admin123"></div>
+                <div class="row">
+                    <label><input type="checkbox" checked> Remember me</label>
+                    <a href="#">Forgot password?</a>
+                </div>
+                <button class="btn" onclick="loginAdmin()">Sign in as Admin</button>
+            </div>
+        </div>
+
+        <!-- User Panel -->
+        <div id="panel-user" style="display:none">
+            <div class="card">
+                <h2>Attendee Portal</h2>
+                <p>View your registration, schedule &amp; tickets.</p>
+                <div class="hint"><strong>Demo:</strong> attendee@event.com &nbsp;/&nbsp; user123</div>
+                <div class="error" id="user-error">Invalid email or password.</div>
+                <div class="field"><label>Email address</label><input id="user-email" type="email"
+                        placeholder="attendee@event.com" value="attendee@event.com"></div>
+                <div class="field"><label>Password</label><input id="user-pass" type="password" placeholder="••••••••"
+                        value="user123"></div>
+                <div class="row">
+                    <label><input type="checkbox" checked> Remember me</label>
+                    <a href="#">Forgot password?</a>
+                </div>
+                <button class="btn" onclick="loginUser()">Sign in as Attendee</button>
+                <div class="divider">— or —</div>
+                <button class="btn" style="background:#f5f5f3;color:#1a1a18;border:0.5px solid #c8c7c0"
+                    onclick="window.location.href='register.html'">
+                    Register for this event
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================= EMAIL VALIDATION =================
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // ================= TAB SWITCH =================
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll(".tab");
+
+            tabs[0].classList.toggle("active", tab === "admin");
+            tabs[1].classList.toggle("active", tab === "user");
+
+            document.getElementById("panel-admin").style.display = tab === "admin" ? "" : "none";
+            document.getElementById("panel-user").style.display = tab === "user" ? "" : "none";
+        }
+
+        // ================= ADMIN LOGIN =================
+        function loginAdmin() {
+            const email = document.getElementById("admin-email").value.trim();
+            const pass = document.getElementById("admin-pass").value;
+            const err = document.getElementById("admin-error");
+
+            if (!email || !pass || !validateEmail(email)) {
+                err.innerText = "Enter valid details";
+                err.style.display = "block";
+                return;
+            }
+
+            if (email === "admin@event.com" && pass === "admin123") {
+                sessionStorage.setItem("role", "admin");
+                window.location.href = "admin_dashboard.html";
+            } else {
+                err.innerText = "Invalid admin credentials";
+                err.style.display = "block";
+            }
+        }
+
+        // ================= USER LOGIN =================
+        function loginUser() {
+            const email = document.getElementById("user-email").value.trim();
+            const pass = document.getElementById("user-pass").value;
+            const err = document.getElementById("user-error");
+
+            if (!email || !pass) {
+                err.innerText = "Enter email and password";
+                err.style.display = "block";
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem("registrants")) || [];
+
+            const user = users.find(u => u.email === email && u.password === pass);
+
+            if (user) {
+                sessionStorage.setItem("role", "user");
+                sessionStorage.setItem("userData", JSON.stringify(user));
+                window.location.href = "user_dashboard.html";
+            } else {
+                err.innerText = "Invalid email or password";
+                err.style.display = "block";
+            }
+        }
+
+        // ================= ENTER KEY =================
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                if (document.getElementById("panel-admin").style.display !== "none") {
+                    loginAdmin();
+                } else {
+                    loginUser();
+                }
+            }
+        });
+
+        // ================= DEFAULT =================
+        switchTab("admin");
+    </script>
+</body>
+
+</html>

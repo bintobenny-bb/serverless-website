@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard – Tech Summit 2026</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f5f5f3;
+            color: #1a1a18;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .nav {
+            background: #fff;
+            border-bottom: 0.5px solid #e0dfd8;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 56px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-badge {
+            background: #185FA5;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .nav-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a18;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #E6F1FB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #185FA5;
+        }
+
+        .nav-name {
+            font-size: 13px;
+            color: #6b6b68;
+        }
+
+        .btn-logout {
+            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 7px;
+            border: 0.5px solid #c8c7c0;
+            background: transparent;
+            color: #6b6b68;
+            cursor: pointer;
+        }
+
+        .btn-logout:hover {
+            background: #f5f5f3;
+        }
+
+        .page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .page-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .page-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .page-header p {
+            font-size: 13px;
+            color: #6b6b68;
+            margin-top: 3px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat {
+            background: #fff;
+            border-radius: 10px;
+            border: 0.5px solid #e0dfd8;
+            padding: 1rem;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b6b68;
+            margin-bottom: 6px;
+        }
+
+        .stat-num {
+            font-size: 26px;
+            font-weight: 600;
+            color: #1a1a18;
+        }
+
+        .stat-change {
+            font-size: 11px;
+            color: #3B6D11;
+            margin-top: 3px;
+        }
+
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 1.5rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            border: 0.5px solid #e0dfd8;
+            padding: 1.25rem;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1a1a18;
+        }
+
+        /* Bar chart */
+        .bar-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .bar-label {
+            width: 64px;
+            color: #6b6b68;
+            flex-shrink: 0;
+        }
+
+        .bar-track {
+            flex: 1;
+            background: #f0efea;
+            border-radius: 4px;
+            height: 10px;
+        }
+
+        .bar-fill {
+            height: 10px;
+            border-radius: 4px;
+            background: #185FA5;
+        }
+
+        .bar-count {
+            width: 24px;
+            text-align: right;
+            color: #1a1a18;
+            font-weight: 500;
+        }
+
+        /* Donut */
+        .donut-wrap {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .donut-legend {
+            font-size: 12px;
+        }
+
+        .legend-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Table */
+        .table-wrap {
+            background: #fff;
+            border-radius: 12px;
+            border: 0.5px solid #e0dfd8;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            border-bottom: 0.5px solid #e0dfd8;
+        }
+
+        .table-header span {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .controls input,
+        .controls select {
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 7px;
+            border: 0.5px solid #c8c7c0;
+            background: #fff;
+            color: #1a1a18;
+            height: 32px;
+            outline: none;
+        }
+
+        .controls input {
+            width: 180px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            table-layout: fixed;
+        }
+
+        th {
+            background: #faf9f7;
+            font-weight: 500;
+            font-size: 11px;
+            color: #6b6b68;
+            padding: 9px 14px;
+            text-align: left;
+            border-bottom: 0.5px solid #e0dfd8;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        td {
+            padding: 10px 14px;
+            border-bottom: 0.5px solid #e0dfd8;
+            color: #1a1a18;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #faf9f7;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .b-confirmed {
+            background: #EAF3DE;
+            color: #3B6D11;
+        }
+
+        .b-pending {
+            background: #FAEEDA;
+            color: #854F0B;
+        }
+
+        .b-cancelled {
+            background: #FCEBEB;
+            color: #A32D2D;
+        }
+
+        .btn-sm {
+            font-size: 11px;
+            padding: 3px 9px;
+            border-radius: 6px;
+            border: 0.5px solid #c8c7c0;
+            background: transparent;
+            color: #6b6b68;
+            cursor: pointer;
+        }
+
+        .btn-sm:hover {
+            background: #f5f5f3;
+        }
+
+        .btn-primary {
+            font-size: 12px;
+            padding: 6px 14px;
+            border-radius: 7px;
+            border: none;
+            background: #185FA5;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background: #0C447C;
+        }
+
+        .btn-export {
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 7px;
+            border: 0.5px solid #c8c7c0;
+            background: transparent;
+            color: #6b6b68;
+            cursor: pointer;
+        }
+
+        .btn-export:hover {
+            background: #f5f5f3;
+        }
+
+        /* Modal */
+        .modal-bg {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-bg.open {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.5rem;
+            width: 380px;
+            border: 0.5px solid #e0dfd8;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        .modal h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .field {
+            margin-bottom: 12px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 12px;
+            color: #6b6b68;
+            margin-bottom: 4px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            font-size: 13px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 0.5px solid #c8c7c0;
+            background: #fff;
+            color: #1a1a18;
+            outline: none;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #185FA5;
+            box-shadow: 0 0 0 2px rgba(24, 95, 165, 0.15);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 1.25rem;
+        }
+
+        .btn-cancel {
+            font-size: 13px;
+            padding: 7px 14px;
+            border-radius: 8px;
+            border: 0.5px solid #c8c7c0;
+            background: transparent;
+            color: #6b6b68;
+            cursor: pointer;
+        }
+
+        .count-label {
+            font-size: 12px;
+            color: #6b6b68;
+            padding: 8px 1.25rem;
+            border-top: 0.5px solid #e0dfd8;
+        }
+
+        @media (max-width: 640px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid2 {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-name {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="nav">
+        <div class="nav-left">
+            <span class="nav-badge">ADMIN</span>
+            <span class="nav-title">Tech Summit 2026</span>
+        </div>
+        <div class="nav-right">
+            <div class="avatar">AD</div>
+            <span class="nav-name">Admin</span>
+            <button class="btn-logout" onclick="logout()">Sign out</button>
+        </div>
+    </nav>
+
+    <div class="page">
+        <div class="page-header">
+            <h2>Registration Dashboard</h2>
+            <p>April 15–16, 2026 &nbsp;·&nbsp; Grand Hyatt, Chennai</p>
+        </div>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="grid2">
+            <!-- Ticket breakdown bar chart -->
+            <div class="card">
+                <div class="card-title">Ticket breakdown</div>
+                <div id="ticket-breakdown"></div>
+            </div>
+            <!-- Status donut -->
+            <div class="card">
+                <div class="card-title">Registration status</div>
+                <div class="donut-wrap">
+                    <canvas id="donut" width="100" height="100"></canvas>
+                    <div class="donut-legend" id="donut-legend"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="table-wrap">
+            <div class="table-header">
+                <span>All Registrants</span>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                    <input type="text" id="search" placeholder="Search…" oninput="render()">
+                    <select id="filter-status" onchange="render()">
+                        <option value="">All statuses</option>
+                        <option>Confirmed</option>
+                        <option>Pending</option>
+                        <option>Cancelled</option>
+                    </select>
+                    <select id="filter-ticket" onchange="render()">
+                        <option value="">All tickets</option>
+                        <option>VIP</option>
+                        <option>General</option>
+                        <option>Virtual</option>
+                    </select>
+                    <button class="btn-export" onclick="exportCSV()">Export CSV</button>
+                    <button class="btn-primary" onclick="openModal()">+ Add</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:36px"><input type="checkbox" id="chk-all" onchange="toggleAll(this)"></th>
+                        <th style="width:170px">Name</th>
+                        <th>Email</th>
+                        <th style="width:80px">Ticket</th>
+                        <th style="width:95px">Status</th>
+                        <th style="width:90px">Registered</th>
+                        <th style="width:80px">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+            <div class="count-label" id="count-label"></div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-bg" id="modal-bg">
+        <div class="modal">
+            <h3 id="modal-title">Add registrant</h3>
+            <div class="field"><label>Full name</label><input id="f-name" type="text" placeholder="Jane Smith"></div>
+            <div class="field"><label>Email</label><input id="f-email" type="email" placeholder="jane@example.com">
+            </div>
+            <div class="field"><label>Ticket type</label>
+                <select id="f-ticket">
+                    <option>General</option>
+                    <option>VIP</option>
+                    <option>Virtual</option>
+                </select>
+            </div>
+            <div class="field"><label>Status</label>
+                <select id="f-status">
+                    <option>Confirmed</option>
+                    <option>Pending</option>
+                    <option>Cancelled</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-primary" onclick="saveModal()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedTicket = null;
+        let ticketPrice = 0;
+        let termsAccepted = false;
+
+        // ================= NAVIGATION =================
+        function goTo(step) {
+            if (step > currentStep && !validateStep(currentStep)) return;
+
+            document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('panel-' + step).classList.add('active');
+
+            for (let i = 1; i <= 4; i++) {
+                const el = document.getElementById('step-' + i);
+                el.classList.remove('active', 'done');
+                if (i < step) el.classList.add('done');
+                if (i === step) el.classList.add('active');
+            }
+
+            if (step === 4) buildSummary();
+            currentStep = step;
+        }
+
+        // ================= VALIDATION =================
+        function validateStep(step) {
+            if (step === 1) {
+                let ok = true;
+
+                const firstname = document.getElementById("firstname").value.trim();
+                const lastname = document.getElementById("lastname").value.trim();
+                const email = document.getElementById("email").value;
+                const phone = document.getElementById("phone").value;
+                const password = document.getElementById("password").value;
+                const confirm = document.getElementById("confirm-password").value;
+
+                if (!firstname) { document.getElementById("f-firstname").classList.add("error"); ok = false; }
+                else document.getElementById("f-firstname").classList.remove("error");
+
+                if (!lastname) { document.getElementById("f-lastname").classList.add("error"); ok = false; }
+                else document.getElementById("f-lastname").classList.remove("error");
+
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    document.getElementById("f-email").classList.add("error"); ok = false;
+                } else document.getElementById("f-email").classList.remove("error");
+
+                if (phone.trim().length < 7) {
+                    document.getElementById("f-phone").classList.add("error"); ok = false;
+                } else document.getElementById("f-phone").classList.remove("error");
+
+                if (password.length < 6) {
+                    document.getElementById("f-password").classList.add("error"); ok = false;
+                } else document.getElementById("f-password").classList.remove("error");
+
+                if (password !== confirm || confirm === "") {
+                    document.getElementById("f-confirm").classList.add("error"); ok = false;
+                } else document.getElementById("f-confirm").classList.remove("error");
+
+                return ok;
+            }
+
+            if (step === 2) {
+                if (!selectedTicket) {
+                    document.getElementById('ticket-error').style.display = 'block';
+                    return false;
+                }
+                document.getElementById('ticket-error').style.display = 'none';
+                return true;
+            }
+
+            return true;
+        }
+
+        function updateStats() {
+            const total = registrants.length;
+
+            const confirmed = registrants.filter(r => r.status === "Confirmed").length;
+            const pending = registrants.filter(r => r.status === "Pending").length;
+            const vip = registrants.filter(r => r.ticket === "VIP").length;
+
+            document.getElementById("stats").innerHTML = `
+        <div class="stat">
+            <div class="stat-label">Total registrants</div>
+            <div class="stat-num">${total}</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">Confirmed</div>
+            <div class="stat-num">${confirmed}</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">Pending</div>
+            <div class="stat-num">${pending}</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">VIP tickets</div>
+            <div class="stat-num">${vip}</div>
+        </div>
+    `;
+        }
+
+        // ================= TICKET =================
+        function selectTicket(type, price) {
+            selectedTicket = type;
+            ticketPrice = price;
+
+            document.querySelectorAll('.ticket-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            document.getElementById('ticket-' + type.toLowerCase()).classList.add('selected');
+
+            document.getElementById('ticket-error').style.display = 'none';
+        }
+        let realUsers = JSON.parse(localStorage.getItem("registrants")) || [];
+
+        // ================= FAKE DATA =================
+        let fakeUsers = [
+            {
+                id: 101,
+                name: "Rahul Sharma",
+                email: "rahul@gmail.com",
+                ticket: "VIP",
+                status: "Confirmed",
+                date: "3/25/2026"
+            },
+            {
+                id: 102,
+                name: "Ananya Iyer",
+                email: "ananya@gmail.com",
+                ticket: "General",
+                status: "Pending",
+                date: "3/24/2026"
+            },
+            {
+                id: 103,
+                name: "Arjun Nair",
+                email: "arjun@gmail.com",
+                ticket: "Virtual",
+                status: "Confirmed",
+                date: "3/23/2026"
+            }
+        ];
+
+        // 🔥 MERGE BOTH
+        let registrants = [...realUsers, ...fakeUsers];
+
+        function badgeClass(status) {
+            if (status === "Confirmed") return "b-confirmed";
+            if (status === "Pending") return "b-pending";
+            return "b-cancelled";
+        }
+
+        function render() {
+            const tb = document.getElementById("tbody");
+
+            if (!registrants.length) {
+                tb.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem">No data</td></tr>`;
+                return;
+            }
+
+            tb.innerHTML = registrants.map(r => `
+<tr>
+  <td><input type="checkbox"></td>
+  <td>${r.name}</td>
+  <td>${r.email}</td>
+  <td>${r.ticket}</td>
+  <td><span class="badge ${badgeClass(r.status)}">${r.status}</span></td>
+  <td>${r.date}</td>
+  <td>
+    <button onclick="editRow(${r.id})">Edit</button>
+    <button onclick="deleteRow(${r.id})">Delete</button>
+  </td>
+</tr>
+`).join("");
+
+            updateStats();
+            renderTicketBreakdown();
+            renderStatusChart();
+        }
+        function renderTicketBreakdown() {
+            let counts = { VIP: 0, General: 0, Virtual: 0 };
+
+            registrants.forEach(r => {
+                if (counts[r.ticket] !== undefined) counts[r.ticket]++;
+            });
+
+            const total = registrants.length || 1;
+
+            document.getElementById("ticket-breakdown").innerHTML = `
+        <div style="margin-bottom:10px">
+            VIP (${counts.VIP})
+            <div style="background:#eee;height:6px;border-radius:4px">
+                <div style="width:${(counts.VIP / total) * 100}%;background:#1a5fb4;height:6px"></div>
+            </div>
+        </div>
+
+        <div style="margin-bottom:10px">
+            General (${counts.General})
+            <div style="background:#eee;height:6px;border-radius:4px">
+                <div style="width:${(counts.General / total) * 100}%;background:#26a269;height:6px"></div>
+            </div>
+        </div>
+
+        <div>
+            Virtual (${counts.Virtual})
+            <div style="background:#eee;height:6px;border-radius:4px">
+                <div style="width:${(counts.Virtual / total) * 100}%;background:#e5a50a;height:6px"></div>
+            </div>
+        </div>
+    `;
+        }
+
+        function renderStatusChart() {
+            let status = { Confirmed: 0, Pending: 0, Cancelled: 0 };
+
+            registrants.forEach(r => {
+                if (status[r.status] !== undefined) status[r.status]++;
+            });
+
+            const canvas = document.getElementById("donut");
+            const ctx = canvas.getContext("2d");
+
+            const data = [status.Confirmed, status.Pending, status.Cancelled];
+            const colors = ["#185FA5", "#e5a50a", "#c01c28"];
+
+            let total = data.reduce((a, b) => a + b, 0) || 1;
+            let start = 0;
+
+            ctx.clearRect(0, 0, 100, 100);
+
+            data.forEach((value, i) => {
+                let angle = (value / total) * 2 * Math.PI;
+
+                ctx.beginPath();
+                ctx.moveTo(50, 50);
+                ctx.arc(50, 50, 45, start, start + angle);
+                ctx.closePath();
+
+                ctx.fillStyle = colors[i];
+                ctx.fill();
+
+                start += angle;
+            });
+
+            // donut hole
+            ctx.beginPath();
+            ctx.arc(50, 50, 25, 0, 2 * Math.PI);
+            ctx.fillStyle = "#fff";
+            ctx.fill();
+
+            // legend
+            document.getElementById("donut-legend").innerHTML = `
+        <div class="legend-row"><span class="dot" style="background:#185FA5"></span>Confirmed ${status.Confirmed}</div>
+        <div class="legend-row"><span class="dot" style="background:#e5a50a"></span>Pending ${status.Pending}</div>
+        <div class="legend-row"><span class="dot" style="background:#c01c28"></span>Cancelled ${status.Cancelled}</div>
+    `;
+        }
+
+        // ================= TERMS =================
+        function toggleTerms() {
+            termsAccepted = !termsAccepted;
+            document.getElementById('terms-chk').classList.toggle('on', termsAccepted);
+            document.getElementById('terms-error').style.display = 'none';
+        }
+
+        // ================= SUMMARY =================
+        function buildSummary() {
+            const name = document.getElementById('firstname').value + ' ' + document.getElementById('lastname').value;
+            const email = document.getElementById('email').value;
+
+            document.getElementById('summary-content').innerHTML = `
+        <div class="summary-row"><span>Name</span><span>${name}</span></div>
+        <div class="summary-row"><span>Email</span><span>${email}</span></div>
+        <div class="summary-row"><span>Ticket</span><span>${selectedTicket}</span></div>
+    `;
+        }
+
+        // ================= FINAL SUBMIT =================
+        function submitForm() {
+            if (!termsAccepted) {
+                document.getElementById('terms-error').style.display = 'block';
+                return;
+            }
+
+            if (!selectedTicket) {
+                document.getElementById('ticket-error').style.display = 'block';
+                return;
+            }
+
+            const userData = {
+                id: "TKT-2026-" + Date.now(),
+                name: document.getElementById('firstname').value + " " + document.getElementById('lastname').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                ticket: selectedTicket,
+                price: ticketPrice,
+                password: document.getElementById('password').value,
+                status: "Confirmed",
+                date: new Date().toLocaleDateString()
+            };
+
+            let users = JSON.parse(localStorage.getItem("registrants")) || [];
+
+            const exists = users.some(u => u.email === userData.email);
+            if (exists) {
+                alert("User already registered");
+                return;
+            }
+
+            users.push(userData);
+            localStorage.setItem("registrants", JSON.stringify(users));
+
+            sessionStorage.setItem("userData", JSON.stringify(userData));
+
+            document.getElementById('success-stub').innerHTML = `
+        <div>${userData.id}</div>
+        <div>${userData.name}</div>
+        <div>${userData.email}</div>
+    `;
+
+            document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('panel-success').classList.add('active');
+        }
+
+        // ================= DASHBOARD =================
+        function goToDashboard() {
+            sessionStorage.setItem("role", "user");
+            window.location.href = "user_dashboard.html";
+        }
+
+        // ================= RESET =================
+        function resetForm() {
+            window.location.reload();
+        }
+
+        function logout() {
+            sessionStorage.clear();   // 🔥 clears admin login
+            window.location.href = "login.html";
+        }
+        render();
+    </script>
+</body>
+
+</html>
