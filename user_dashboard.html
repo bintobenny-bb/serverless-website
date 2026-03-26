@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Registration – Tech Summit 2026</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f5f5f3;
+            color: #1a1a18;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .nav {
+            background: #fff;
+            border-bottom: 0.5px solid #e0dfd8;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 56px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-badge {
+            background: #3B6D11;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .nav-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a18;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #EAF3DE;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #3B6D11;
+        }
+
+        .btn-logout {
+            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 7px;
+            border: 0.5px solid #c8c7c0;
+            background: transparent;
+            color: #6b6b68;
+            cursor: pointer;
+        }
+
+        .btn-logout:hover {
+            background: #f5f5f3;
+        }
+
+        .page {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Hero banner */
+        .hero {
+            background: #185FA5;
+            border-radius: 14px;
+            padding: 1.75rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            right: -40px;
+            top: -40px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .hero-eyebrow {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            opacity: 0.7;
+            margin-bottom: 6px;
+        }
+
+        .hero h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .hero p {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Ticket card */
+        .ticket {
+            background: #fff;
+            border-radius: 14px;
+            border: 0.5px solid #e0dfd8;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .ticket-top {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 0.5px dashed #e0dfd8;
+        }
+
+        .ticket-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #6b6b68;
+            margin-bottom: 4px;
+        }
+
+        .ticket-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a18;
+        }
+
+        .ticket-bottom {
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #faf9f7;
+        }
+
+        .ticket-id {
+            font-size: 12px;
+            color: #6b6b68;
+            font-family: monospace;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .b-confirmed {
+            background: #EAF3DE;
+            color: #3B6D11;
+        }
+
+        .b-pending {
+            background: #FAEEDA;
+            color: #854F0B;
+        }
+
+        .b-vip {
+            background: #E6F1FB;
+            color: #185FA5;
+        }
+
+        /* QR placeholder */
+        .qr-wrap {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .qr-box {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            border: 0.5px solid #e0dfd8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: #fff;
+        }
+
+        .qr-box svg {
+            width: 56px;
+            height: 56px;
+        }
+
+        .qr-text {
+            font-size: 12px;
+            color: #6b6b68;
+            line-height: 1.6;
+        }
+
+        .qr-text strong {
+            color: #1a1a18;
+            font-weight: 600;
+        }
+
+        /* Schedule */
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .schedule {
+            background: #fff;
+            border-radius: 14px;
+            border: 0.5px solid #e0dfd8;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .day-header {
+            padding: 10px 1.25rem;
+            background: #f5f5f3;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b6b68;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border-bottom: 0.5px solid #e0dfd8;
+        }
+
+        .session {
+            padding: 12px 1.25rem;
+            display: flex;
+            gap: 1rem;
+            border-bottom: 0.5px solid #f0efea;
+            align-items: flex-start;
+        }
+
+        .session:last-child {
+            border-bottom: none;
+        }
+
+        .session-time {
+            font-size: 12px;
+            color: #6b6b68;
+            width: 80px;
+            flex-shrink: 0;
+            padding-top: 2px;
+        }
+
+        .session-info {
+            flex: 1;
+        }
+
+        .session-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #1a1a18;
+        }
+
+        .session-meta {
+            font-size: 12px;
+            color: #6b6b68;
+            margin-top: 2px;
+        }
+
+        .session-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 7px;
+            border-radius: 4px;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .tag-keynote {
+            background: #E6F1FB;
+            color: #185FA5;
+        }
+
+        .tag-workshop {
+            background: #EAF3DE;
+            color: #3B6D11;
+        }
+
+        .tag-panel {
+            background: #FAEEDA;
+            color: #854F0B;
+        }
+
+        .tag-networking {
+            background: #EEEDFE;
+            color: #534AB7;
+        }
+
+        /* Info grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-card {
+            background: #fff;
+            border-radius: 12px;
+            border: 0.5px solid #e0dfd8;
+            padding: 1rem 1.25rem;
+        }
+
+        .info-card-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b6b68;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            align-items: flex-start;
+        }
+
+        .info-row .icon {
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .info-row .text {
+            color: #1a1a18;
+        }
+
+        .info-row .sub {
+            color: #6b6b68;
+            font-size: 12px;
+        }
+
+        .btn-outline {
+            font-size: 13px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 0.5px solid #c8c7c0;
+            background: transparent;
+            color: #1a1a18;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .btn-outline:hover {
+            background: #f5f5f3;
+        }
+
+        @media (max-width: 560px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ticket-top {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="nav">
+        <div class="nav-left">
+            <span class="nav-badge">ATTENDEE</span>
+            <span class="nav-title">Tech Summit 2026</span>
+        </div>
+        <div class="nav-right">
+            <div class="avatar">DV</div>
+            <span style="font-size:13px;color:#6b6b68">Divya V.</span>
+            <button class="btn-logout" onclick="logout()">Sign out</button>
+        </div>
+    </nav>
+
+    <div class="page">
+
+        <!-- Hero -->
+        <div class="hero">
+            <div class="hero-eyebrow">Welcome back</div>
+            <h2>Annual Tech Summit 2026</h2>
+            <p>You're registered! Here's everything you need for the event.</p>
+            <div class="hero-pills">
+                <span class="pill">&#128197; Apr 15–16, 2026</span>
+                <span class="pill">&#128205; Grand Hyatt, Chennai</span>
+                <span class="pill">&#127881; 3 weeks away</span>
+            </div>
+        </div>
+
+        <!-- Ticket -->
+        <div class="section-title">Your ticket</div>
+        <div class="ticket">
+            <div class="ticket-top">
+                <div>
+                    <div class="ticket-label">Attendee</div>
+                    <div class="ticket-value">Divya Venkatesh</div>
+                    <div style="font-size:13px;color:#6b6b68;margin-top:2px">divya.v@freshworks.com</div>
+                </div>
+                <div style="text-align:right">
+                    <div class="ticket-label" style="text-align:right">Ticket type</div>
+                    <span class="badge b-vip" style="font-size:14px;padding:4px 14px">Virtual</span>
+                    <div style="margin-top:8px"><span class="badge b-confirmed">Confirmed</span></div>
+                </div>
+            </div>
+            <div class="ticket-bottom">
+                <div class="qr-wrap">
+                    <div class="qr-box">
+                        <!-- Simple QR-like graphic -->
+                        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="4" width="20" height="20" rx="2" stroke="#1a1a18" stroke-width="2"
+                                fill="none" />
+                            <rect x="8" y="8" width="12" height="12" rx="1" fill="#1a1a18" />
+                            <rect x="32" y="4" width="20" height="20" rx="2" stroke="#1a1a18" stroke-width="2"
+                                fill="none" />
+                            <rect x="36" y="8" width="12" height="12" rx="1" fill="#1a1a18" />
+                            <rect x="4" y="32" width="20" height="20" rx="2" stroke="#1a1a18" stroke-width="2"
+                                fill="none" />
+                            <rect x="8" y="36" width="12" height="12" rx="1" fill="#1a1a18" />
+                            <rect x="32" y="32" width="4" height="4" fill="#1a1a18" />
+                            <rect x="38" y="32" width="4" height="4" fill="#1a1a18" />
+                            <rect x="44" y="32" width="8" height="4" fill="#1a1a18" />
+                            <rect x="32" y="38" width="8" height="4" fill="#1a1a18" />
+                            <rect x="44" y="38" width="4" height="4" fill="#1a1a18" />
+                            <rect x="32" y="44" width="4" height="8" fill="#1a1a18" />
+                            <rect x="38" y="46" width="14" height="4" fill="#1a1a18" />
+                        </svg>
+                    </div>
+                    <div class="qr-text">
+                        <strong>Show this QR at check-in</strong><br>
+                        Scan at the registration desk<br>to collect your badge &amp; lanyard.
+                    </div>
+                </div>
+                <div class="ticket-id">TKT-2026-00205</div>
+            </div>
+        </div>
+
+        <!-- Schedule -->
+        <div class="section-title">Event schedule</div>
+        <div class="schedule">
+            <div class="day-header">Day 1 — April 15, 2026</div>
+            <div class="session">
+                <div class="session-time">9:00 AM</div>
+                <div class="session-info">
+                    <div class="session-name">Opening Keynote: The Future of AI in Enterprise</div>
+                    <div class="session-meta">Main Auditorium &nbsp;·&nbsp; Dr. Anita Rao, CTO @ Infosys</div>
+                    <span class="session-tag tag-keynote">Keynote</span>
+                </div>
+            </div>
+            <div class="session">
+                <div class="session-time">11:00 AM</div>
+                <div class="session-info">
+                    <div class="session-name">Workshop: Building Production-Ready LLM Apps</div>
+                    <div class="session-meta">Hall B &nbsp;·&nbsp; Kiran Patel, Freshworks</div>
+                    <span class="session-tag tag-workshop">Workshop</span>
+                </div>
+            </div>
+            <div class="session">
+                <div class="session-time">2:00 PM</div>
+                <div class="session-info">
+                    <div class="session-name">Panel: Cloud-Native Architecture in 2026</div>
+                    <div class="session-meta">Hall A &nbsp;·&nbsp; 4 speakers</div>
+                    <span class="session-tag tag-panel">Panel</span>
+                </div>
+            </div>
+            <div class="session">
+                <div class="session-time">5:30 PM</div>
+                <div class="session-info">
+                    <div class="session-name">Networking Reception</div>
+                    <div class="session-meta">Terrace Lounge &nbsp;·&nbsp; Drinks &amp; canapes</div>
+                    <span class="session-tag tag-networking">Networking</span>
+                </div>
+            </div>
+
+            <div class="day-header">Day 2 — April 16, 2026</div>
+            <div class="session">
+                <div class="session-time">9:30 AM</div>
+                <div class="session-info">
+                    <div class="session-name">Keynote: Open Source &amp; the Next Decade</div>
+                    <div class="session-meta">Main Auditorium &nbsp;·&nbsp; Suresh Iyer, Red Hat</div>
+                    <span class="session-tag tag-keynote">Keynote</span>
+                </div>
+            </div>
+            <div class="session">
+                <div class="session-time">11:30 AM</div>
+                <div class="session-info">
+                    <div class="session-name">Workshop: DevSecOps from Zero to Hero</div>
+                    <div class="session-meta">Lab Room 1 &nbsp;·&nbsp; Bring your laptop</div>
+                    <span class="session-tag tag-workshop">Workshop</span>
+                </div>
+            </div>
+            <div class="session">
+                <div class="session-time">3:00 PM</div>
+                <div class="session-info">
+                    <div class="session-name">Closing Ceremony &amp; Awards</div>
+                    <div class="session-meta">Main Auditorium &nbsp;·&nbsp; All attendees</div>
+                    <span class="session-tag tag-keynote">Keynote</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info grid -->
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-card-title">Venue</div>
+                <div class="info-row"><span class="icon">&#127968;</span>
+                    <div>
+                        <div class="text">Grand Hyatt Chennai</div>
+                        <div class="sub">365, Anna Salai, Teynampet</div>
+                    </div>
+                </div>
+                <div class="info-row"><span class="icon">&#128664;</span>
+                    <div>
+                        <div class="text">Valet parking available</div>
+                        <div class="sub">Complimentary for VIP</div>
+                    </div>
+                </div>
+                <div class="info-row"><span class="icon">&#128641;</span>
+                    <div>
+                        <div class="text">Shuttle from Chennai Central</div>
+                        <div class="sub">Every 30 mins from 7:30 AM</div>
+                    </div>
+                </div>
+                <button class="btn-outline" onclick="alert('Opening maps…')">Get directions</button>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title">Your checklist</div>
+                <div id="checklist"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================= AUTH GUARD =================
+        if (sessionStorage.getItem("role") !== "user") {
+            window.location.href = "login.html";
+        }
+
+        // ================= LOAD USER DATA =================
+        const user = JSON.parse(sessionStorage.getItem("userData"));
+
+        if (user) {
+            // Ticket section
+            document.querySelector(".ticket-value").innerText = user.name;
+            document.querySelector(".ticket-value + div").innerText = user.email;
+            document.querySelector(".b-vip").innerText = user.ticket;
+            document.querySelector(".ticket-id").innerText = user.id;
+
+            // Navbar name
+            document.querySelector(".nav-right span").innerText = user.name;
+
+            // Avatar initials
+            const initials = user.name
+                .split(" ")
+                .map(n => n[0])
+                .join("")
+                .toUpperCase();
+
+            document.querySelector(".avatar").innerText = initials;
+        }
+
+        // ================= CHECKLIST =================
+        const savedChecklist = JSON.parse(localStorage.getItem("checklist"));
+
+        const items = savedChecklist || [
+            { text: "Download event app", done: true },
+            { text: "Review schedule", done: true },
+            { text: "Book hotel room", done: false },
+            { text: "Print or save QR code", done: false },
+            { text: "Join attendee WhatsApp group", done: false },
+        ];
+
+        function renderChecklist() {
+            document.getElementById("checklist").innerHTML = items.map((item, i) => `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer" onclick="toggleItem(${i})">
+            <div style="width:16px;height:16px;border-radius:4px;border:1.5px solid ${item.done ? '#3B6D11' : '#c8c7c0'};background:${item.done ? '#3B6D11' : 'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                ${item.done ? '<svg width="10" height="10" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
+            </div>
+            <span style="font-size:13px;color:${item.done ? '#6b6b68' : '#1a1a18'};text-decoration:${item.done ? 'line-through' : 'none'}">${item.text}</span>
+        </div>
+    `).join("");
+        }
+
+        function toggleItem(i) {
+            items[i].done = !items[i].done;
+            localStorage.setItem("checklist", JSON.stringify(items));
+            renderChecklist();
+        }
+
+        // ================= LOGOUT =================
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = "login.html";
+        }
+
+        // ================= INIT =================
+        renderChecklist();
+    </script>
+</body>
+
+</html>
